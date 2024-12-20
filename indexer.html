@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="jp">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spotify_検索フォーム</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .track {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+        .track img {
+            width: 50px;
+            height: 50px;
+            margin-right: 10px;
+        }
+        .track a {
+            text-decoration: none;
+            color: #1DB954;
+        }
+    </style>
+</head>
+<body>
+    <h1>多分曲検索する場所</h1>
+
+    <!-- 検索フォーム -->
+    <input type="text" id="searchQuery" placeholder="曲を検索">
+    <button onclick="searchSpotify()">Search</button>
+
+    <!-- 検索結果表示 -->
+    <div id="results"></div>
+
+    <script>
+        const clientId = 'af3885e3841847599deed4344bc514f9';  // SpotifyのClient IDをここに入力
+        const clientSecret = '8d2c06db56fc4ae2b25910506fcb5a11';  // SpotifyのClient Secretをここに入力
+
+        let accessToken = '';
+
+        // アクセストークンを取得する関数
+        async function getAccessToken() {
+            const tokenUrl = 'https://accounts.spotify.com/api/token';
+            const headers = new Headers();
+            headers.append('Authorization', 'Basic ' + btoa(clientId + ':' + clientSecret));
+            headers.append('Content-Type', 'application/x-www-form-urlencoded');
+
+            const body = new URLSearchParams();
+            body.append('grant_type', 'client_credentials');
+
+            const requestOptions = {
+                method: 'POST',
+                headers: headers,
+                body: body,
+                redirect: 'follow'
+            };
+
+            try {
+                const response = await fetch(tokenUrl, requestOptions);
+                const data = await response.json();
+                accessToken = data.access_token;
+                console.log("Access Token:", accessToken);
+            } catch (error) {
+                console.error('Error fetching access token:', error);
+            }
+        }
+
+        // Spotifyで曲を検索する関数
+        async function searchSpotify() {
+            const query = document.getElementById('searchQuery').value;
+            if (!query) {
+                alert('Please enter a search term');
+                return;
+            }
+
+            // アクセストークンが取得されていない場合は先に取得
+            if (!accessToken) {
+                await getAccessToken();
+            }
+
+            const searchUrl = `https://api.spotify.com/v1/search?q=${encodeURIComponent(query)}&type=track&limit=10`;
+
+            const searchHeaders = {
+                'Authorization': 'Bearer ' + accessToken
+            };
+
+            const searchRequestOptions = {
+                method: 'GET',
+                headers: searchHeaders,
+            };
+
+            try {
+                const response = await fetch(searchUrl, searchRequestOptions);
+                const data = await response.json();
+                displayResults(data.tracks.items);
+            } catch (error) {
+                console.error('Error fetching search results:', error);
+            }
+        }
+
+        // 検索結果をHTMLに表示する関数
+        function displayResults(tracks) {
+            const resultsContainer = document.getElementById('results');
+            resultsContainer.innerHTML = '';  // 結果をリセット
+
+            if (tracks.length === 0) {
+                resultsContainer.innerHTML = '<p>No tracks found.</p>';
+                return;
+            }
+
+            tracks.forEach(track => {
+                const trackElement = document.createElement('div');
+                trackElement.classList.add('track');
+                trackElement.innerHTML = `
+                    <img src="${track.album.images[2].url}" alt="${track.name}">
+                    <a href="${track.external_urls.spotify}" target="_blank">${track.name}</a> by ${track.artists[0].name}
+                `;
+                resultsContainer.appendChild(trackElement);
+            });
+        }
+        const headers = new Headers();
+        headers.append('Authorization', 'Basic ' + btoa(clientId + ':' + clientSecret));
+        headers.append('Content-Type', 'application/x-www-form-urlencoded');
+
+        const body = new URLSearchParams();
+        body.append('grant_type', 'client_credentials');
+        const searchUrl = `https://api.spotify.com/v1/search?q=${encodeURIComponent(query)}&type=track&limit=10`;
+        trackElement.innerHTML = `
+        <img src="${track.album.images[2].url}" alt="${track.name}">
+        <a href="${track.external_urls.spotify}" target="_blank">${track.name}</a> by ${track.artists[0].name}
+`;
+    </script>
+</body>
+</html>
