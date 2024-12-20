@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="jp">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>クリックイベント</title>
+</head>
+<body>
+    <h1>クリックイベント</h1>
+    <buttoon class = "button">クリック</buttoon>
+    
+    <script>
+        document.querySelector('.button').addEventListener('click', () => {
+            alert("クリックQWERTYうイオパsdfghjklzxcvbんm");
+        });
+    </script>
+
+    <h1>カウントダウン色変更</h1>
+    <buttoon class = "button2">クリックしてスタート</buttoon>
+    <script>
+        let i = 0;
+        let j = 10;
+        j = getElementbyid("button2");
+        document.querySelector('.button2').addEventListener('click', () => {
+            i++;
+            if(i == 50) {
+                i = 0;
+                j--;
+            }
+            button2.innerHTML = j;
+        });
+    </script>
+</body>
+</html>

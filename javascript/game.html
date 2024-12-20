@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="jp">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>数当てゲームホームページ</title>
+</head>
+<body>
+    <h1>数当てゲーム</h1>
+    <script>
+        //乱数で数字を作る(１から10まで)constは定数
+        const answer = Math.floor(Math.random() * 10) + 1;
+        let guess;      //変数guess
+        do {
+            guess = parseInt(prompt('1~10のどれか'), 10);
+            if(guess < answer)
+                alert('残念、これより大きい');
+            else if(guess > answer)
+                alert('あらら、もっと小さい数だねぇ');
+        }while(guess !== answer);
+            alert('せいっかい');
+    </script>
+</body>
+</html>

@@ -15,5 +15,21 @@
             alert("クリックQWERTYうイオパsdfghjklzxcvbんm");
         });
     </script>
+
+    <h1>カウントダウン色変更</h1>
+    <buttoon class = "button2">クリックしてスタート</buttoon>
+    <script>
+        let i = 0;
+        let j = 10;
+        j = getElementbyid("button2");
+        document.querySelector('.button2').addEventListener('click', () => {
+            i++;
+            if(i == 50) {
+                i = 0;
+                j--;
+            }
+            button2.innerHTML = j;
+        });
+    </script>
 </body>
 </html>
